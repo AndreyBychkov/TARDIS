@@ -9,7 +9,7 @@ details.
 import gudhi as gd
 import numpy as np
 
-from gph import ripser_parallel
+import ripserplusplus as rpp_py
 
 
 class GUDHI:
@@ -77,11 +77,8 @@ class Ripser:
         if len(X) == 0:
             return [], -1
 
-        diagrams = ripser_parallel(
-            X, maxdim=max_dim, collapse_edges=True
-        )
-
-        diagrams = diagrams["dgms"]
+        diagrams = rpp_py.run(f"--format point-cloud --dim {max_dim}", X)
+        diagrams = [np.array(diagrams[dim].tolist()) for dim in sorted(diagrams.keys())]
         max_dim = np.max([d for d, D in enumerate(diagrams) if len(D) > 0])
 
         if self.stack_diagrams:
