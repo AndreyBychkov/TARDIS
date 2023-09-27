@@ -82,6 +82,9 @@ class Ripser:
         max_dim = np.max([d for d, D in enumerate(diagrams) if len(D) > 0])
 
         if self.stack_diagrams:
-            diagrams = np.row_stack(diagrams)
-
+            try:
+                diagrams = np.row_stack(diagrams)
+            except Exception as e:
+                print(diagrams)
+                raise e
         return diagrams, max_dim
